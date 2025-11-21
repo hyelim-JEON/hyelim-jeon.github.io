@@ -22,29 +22,31 @@ const obj = {
 };
 
 obj.getA(); // 1
+
 📌 Here, this refers to obj because obj.getA() calls the function.
 
 🟣 Arrow Function & this
+
 Arrow functions do not have their own this.
 They inherit this from their surrounding (outer) scope.
 
-javascript
-Copy code
 const obj = {
   a: 1,
   getA: () => console.log(this.a)
 };
 
 obj.getA(); // undefined
+
 ⛔ Even inside an object, an arrow function does not bind this to the object.
 
 🥇 Key Differences
-Feature	Normal Function	Arrow Function
-this	Depends on caller	Inherits from outer scope
-Object methods	✔ Good	❌ Not recommended
-Callbacks	⚠ Sometimes	✔ Best choice
-
+| Feature        | Normal Function   | Arrow Function            |
+| -------------- | ----------------- | ------------------------- |
+| `this`         | Depends on caller | Inherits from outer scope |
+| Object methods | ✔ Good            | ❌ Not recommended         |
+| Callbacks      | ⚠ Sometimes       | ✔ Best choice             |
 💬 Summary
+
 Normal functions get this from how they’re called.
 
 Arrow functions get this from where they’re created.
