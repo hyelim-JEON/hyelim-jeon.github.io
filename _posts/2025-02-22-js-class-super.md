@@ -1,66 +1,112 @@
 ---
-title: "JavaScript: this vs Arrow Functions"
-date: 2025-02-21
+title: "JavaScript: Class Inheritance & super() Explained"
+date: 2025-02-22
 categories: [TIL]
-tags: [JavaScript, this, arrow function]
+tags: [JavaScript, class, inheritance, super]
 ---
 
-In JavaScript, `this` works differently in **normal functions** and **arrow functions**.
+JavaScript classes support **inheritance**, allowing one class to extend another and reuse its functionality.  
+The keyword `super()` plays a key role when working with inherited constructors.
 
 ---
 
-## 🔵 Normal Function & `this`
+## 🏗️ Basic Class Inheritance
 
-In a normal function, `this` depends on **how the function is called**, not where it is written.
+A class can **extend** another using the `extends` keyword:
 
 ```javascript
-const obj = {
-  a: 1,
-  getA() {
-    console.log(this.a);
+class Parent {
+  constructor(name) {
+    this.name = name;
   }
-};
+}
 
-obj.getA(); // 1
+class Child extends Parent {}
+
+const c = new Child("Hailey");
+console.log(c.name); // "Hailey"
 ```
 
-> 📌 `this` refers to **obj** because the function is called as `obj.getA()`.
+> 📌 The `Child` class automatically inherits the `Parent` constructor when no constructor is defined in `Child`.
 
 ---
 
-## 🟣 Arrow Function & `this`
+## 🔑 What is `super()`?
 
-Arrow functions **do not have their own `this`**.  
-They inherit `this` from the **outer (lexical) scope**.
+When you add a constructor to the child class, the first thing you **must** do is call `super()`.
 
 ```javascript
-const obj = {
-  a: 1,
-  getA: () => console.log(this.a)
-};
+class Parent {
+  constructor(name) {
+    this.name = name;
+  }
+}
 
-obj.getA(); // undefined
+class Child extends Parent {
+  constructor(name, grade) {
+    super(name);   // 👈 calls Parent constructor
+    this.grade = grade;
+  }
+}
+
+const c = new Child("Hailey", "A");
+console.log(c.name);  // "Hailey"
+console.log(c.grade); // "A"
 ```
 
-> ⛔ Even inside an object, an arrow function **does not bind `this` to the object**.
+> 📌 `super(name)` passes the value to the parent constructor.
 
 ---
 
-## 🥇 Key Differences
+## ⚠️ Child Without Passing All Parent Parameters
 
-| Feature | Normal Function | Arrow Function |
-|--------|----------------|----------------|
-| `this` | Depends on caller | Inherits from lexical scope |
-| Best for object methods | ✔ Yes | ❌ No |
-| Best for callbacks | ⚠ Sometimes | ✔ Yes |
-| Can be used as constructor | ✔ Yes | ❌ No |
+You **don’t have to pass every parent parameter**, but any missing one becomes `undefined`.
+
+```javascript
+class Parent {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+class Child extends Parent {
+  constructor(name) {
+    super(name); // age not passed!
+  }
+}
+
+const c = new Child("Hailey");
+console.log(c.age); // undefined
+```
+
+> ❗ The field exists, but with no value → **undefined**.
 
 ---
 
-## 💬 Summary
+## 🎁 Default Values Can Prevent undefined
 
-- Normal functions get `this` from **how they are called**.
-- Arrow functions get `this` from **where they are created**.
+To avoid undefined values, give parent parameters **default values**:
 
-> ✨ **Use normal functions for object methods.**  
-> ⚡ **Use arrow functions for callbacks.**
+```javascript
+class Parent {
+  constructor(name, age = 0) {
+    this.name = name;
+    this.age = age;
+  }
+}
+```
+
+> 👉 Now `age` is `0` when not provided.
+
+---
+
+## 🧠 Summary
+
+- `extends` allows a class to inherit from another.
+- `super()` must be called **before using `this`** in child constructors.
+- Missing parent parameters become **undefined**.
+- Default values in parent constructors help avoid undefined.
+
+> 🚀 **Use inheritance to reuse logic, and use `super()` to initialize the parent properly.**
+
