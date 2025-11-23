@@ -1,6 +1,6 @@
 ---
 title: "JavaScript: Class Inheritance & super() Explained"
-date: 2025-02-22
+date: 2025-11-22
 categories: [TIL]
 tags: [JavaScript, class, inheritance, super]
 ---
