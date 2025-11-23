@@ -1,6 +1,6 @@
 ---
 title: "JavaScript: Arrays, Object Properties & Custom Data Structures"
-date: 2025-02-21
+date: 2025-11-23
 categories: [TIL]
 tags: [JavaScript, array, object, data structure]
 ---
