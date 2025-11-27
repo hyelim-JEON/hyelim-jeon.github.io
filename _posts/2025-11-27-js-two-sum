@@ -1,0 +1,92 @@
+---
+title: "Two Sum: Algorithm Insight + Real-World Caching Example"
+date: 2025-11-27
+categories: [TIL, Algorithm, JavaScript]
+tags: [Map, Hash Table, Cache, Two Sum, JS]
+---
+
+## 🎯 Two Sum — Algorithm With Real-World Meaning
+
+Given an array of integers `nums` and a number `target`, return the **indices of two elements whose sum equals the target**.
+
+> We assume exactly one valid answer exists.
+
+### 🧠 Why Use Map?
+
+Using a `Map` lets us check if we have already seen the matching value in `O(1)` time.  
+We avoid scanning the array multiple times (which would be `O(n²)`).
+
+### 🧑‍💻 O(n) Solution Using Map
+
+    function twoSum(nums, target) {
+      const seen = new Map();
+
+      for (let i = 0; i < nums.length; i++) {
+        const needed = target - nums[i];
+
+        if (seen.has(needed)) return [seen.get(needed), i];
+
+        seen.set(nums[i], i);
+      }
+    }
+
+### 📌 Complexity Analysis
+
+| Operation | Time |
+|----------|------|
+| `has()` lookup | `O(1)` |
+| `set()` insert | `O(1)` |
+| Full solution | `O(n)` |
+
+We only loop once and use constant-time lookup.
+
+---
+
+## 💼 Real-World Analogy: Map as a Cache
+
+In real development, high-performance apps avoid **doing the same work twice**.  
+We frequently check:
+
+> “Have we seen this data before?”
+
+Examples:
+- API response caching
+- Memoizing heavy computations
+- Reusing validated form data
+- Caching user/product info in e-commerce
+
+### 🗂️ Example: Caching User Lookups
+
+    const userCache = new Map();
+
+    function getUser(id) {
+      if (userCache.has(id)) {
+        return userCache.get(id); // fast reuse
+      }
+
+      const user = fetchUserFromServer(id); // expensive operation
+      userCache.set(id, user);
+      return user;
+    }
+
+---
+
+## 🔗 How It Connects to Two Sum
+
+| Two Sum | Real-World Cache |
+|--------|-------------------|
+| Stores seen numbers | Stores previously fetched/processed data |
+| Avoids re-scanning | Avoids re-fetching or re-computing |
+| Uses constant lookup | Uses constant lookup |
+| Saves time | Saves time & cost |
+
+📌 Same idea: **remember what you’ve already processed and reuse it.**
+
+---
+
+## 🚀 Final Insight
+
+> Using `Map` is not just about `O(1)` lookup.  
+> It’s about **avoiding duplicate work**, both in interviews and production apps.
+
+Whether solving algorithms or building scalable systems, always think:
